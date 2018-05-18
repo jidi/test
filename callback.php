@@ -39,7 +39,6 @@ class msg extends cb\message{
           return $e->getMessage();
         }
 
-
       case 'w':
         try{
           return $reply->text((new mp\user($token))->info($reply->FromUserName)->nickname);
