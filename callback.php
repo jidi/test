@@ -32,6 +32,13 @@ class msg extends cb\message{
       case 'menu':
         return $reply->text(new mp\menu($token));
 
+      case 'ww':
+        try{
+          return $reply->text(json_encode((new mp\user($token))->info($reply->FromUserName)));
+        }catch(RuntimeException $e){
+          return $e->getMessage();
+        }
+
       case 'w':
         try{
           return $reply->text((new mp\user($token))->info($reply->FromUserName)->nickname);
