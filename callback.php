@@ -18,6 +18,9 @@ class msg extends cb\message{
     $token = new mp\token(getenv('APPID'),getenv('SECRET'));
 
     switch($str){
+      case 'test':
+        return $reply->text(json_encode($reply));
+
       case 'env':
         return $reply->text(getenv('APPID').' '.getenv('SECRET'));
 
