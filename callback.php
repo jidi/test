@@ -14,55 +14,31 @@ class msg extends cb\message{
 
   function text(reply $reply):?DOMDocument{
 
-    $str = trim((string)$reply->Recognition?:(string)$reply->Content,"。！? \n\r\t\0");
-    $token = new mp\token(getenv('APPID'),getenv('SECRET'));
+    try{
+      $token = new mp\token(getenv('APPID'),getenv('SECRET'));
+    }catch(RuntimeException $e){
+      return $reply->text($e->getMessage());//FIXME 其他不使用api的case应该不受影响
+    }
 
+    $str = trim((string)$reply->Recognition?:(string)$reply->Content,"。！? \n\r\t\0");
     switch($str){
 
       case 'env':
         return $reply->text(getenv('APPID').' '.getenv('SECRET'));
 
-
-      case 't':
-        try{
-          return $reply->text(json_encode($token));
-        }catch(Throwable $e){
-          return $e->getMessage();
-        }
-
-
-      case 'tt':
-        try{
-          return $reply->text("$token");
-        }catch(Throwable $e){
-          return $e->getMessage();
-        }
-
       case 'token':
-        try{
-          return $reply->text($token);
-        }catch(Throwable $e){
-          return $e->getMessage();
-        }
+        return $reply->text($token);
 
       case 'ls':
-        $media = new mp\media($token);
-        $wc = $media->get_materialcount();
+        $wc = $token->media()->get_materialcount();
         return $reply->text(json_encode($wc));
 
       case 'menu':
-        return $reply->text(new mp\menu($token));
-
-      case 'ww':
-        try{
-          return $reply->text(json_encode((new mp\user($token))->info($reply->FromUserName)));
-        }catch(RuntimeException $e){
-          return $e->getMessage();
-        }
+        return $reply->text($token->menu());
 
       case 'w':
         try{
-          return $reply->text((new mp\user($token))->info($reply->FromUserName)->nickname);
+          return $reply->text($token->user()->info($reply->FromUserName)->nickname);
         }catch(RuntimeException $e){
           return $e->getMessage();
         }
