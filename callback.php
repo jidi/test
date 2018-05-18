@@ -30,6 +30,14 @@ class msg extends cb\message{
           return $e->getMessage();
         }
 
+
+      case 'tt':
+        try{
+          return $reply->text("$token");
+        }catch(Throwable $e){
+          return $e->getMessage();
+        }
+
       case 'token':
         try{
           return $reply->text($token);
