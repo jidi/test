@@ -21,6 +21,7 @@ class msg extends cb\message{
       case 'test':
         return $reply->text(json_encode($reply));
 
+
       case 'env':
         return $reply->text(getenv('APPID').' '.getenv('SECRET'));
 
