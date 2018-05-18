@@ -18,14 +18,23 @@ class msg extends cb\message{
     $token = new mp\token(getenv('APPID'),getenv('SECRET'));
 
     switch($str){
-      case 'test':
-        return $reply->text(json_encode($reply));
 
       case 'env':
         return $reply->text(getenv('APPID').' '.getenv('SECRET'));
 
+      case 't':
+        try{
+          return $reply->text(json_encode($token));
+        }catch(Throwable $e){
+          return $e->getMessage();
+        }
+
       case 'token':
-        return $reply->text($token);
+        try{
+          return $reply->text($token);
+        }catch(Throwable $e){
+          return $e->getMessage();
+        }
 
       case 'ls':
         $media = new mp\media($token);
